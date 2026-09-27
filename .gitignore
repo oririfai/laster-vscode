@@ -1,0 +1,16 @@
+# Build output and dependencies
+node_modules/
+out/
+*.vsix
+.vscode-test/
+
+# Private / internal (not part of the public repo)
+brainstorming/
+CLAUDE.md
+.claude/
+/scratch/
+
+# Local junk and secrets
+.DS_Store
+*.log
+.env*

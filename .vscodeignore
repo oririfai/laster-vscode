@@ -1,0 +1,30 @@
+# Source, tests, and dev config
+src/**
+out/test/**
+out/integration/**
+**/*.map
+**/tsconfig.json
+.vscode/**
+.vscode-test/**
+.github/**
+.gitignore
+*.vsix
+
+# Private / internal
+brainstorming/**
+CLAUDE.md
+.claude/**
+scratch/**
+.DS_Store
+
+# Only lib/index.js and lib/** of the diff package are loaded at runtime
+node_modules/diff/dist/**
+node_modules/diff/**/*.mjs
+node_modules/diff/lib/index.es6.js
+node_modules/diff/release-notes.md
+node_modules/diff/CONTRIBUTING.md
+node_modules/diff/README.md
+node_modules/diff/runtime.js
+
+# Source SVG of the Marketplace icon
+media/icon.svg

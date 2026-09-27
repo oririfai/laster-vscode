@@ -1,0 +1,616 @@
+{
+  "name": "laster",
+  "displayName": "Laster",
+  "description": "Review code changes made by AI agents (or anything that isn't you): green/red highlights, then Approve or Revert. No git required.",
+  "version": "0.3.0",
+  "publisher": "oririfai",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oririfai/laster-vscode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/oririfai/laster-vscode/issues"
+  },
+  "homepage": "https://github.com/oririfai/laster-vscode#readme",
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#1e2230",
+    "theme": "dark"
+  },
+  "keywords": [
+    "ai",
+    "review",
+    "diff",
+    "highlight",
+    "claude",
+    "claude code",
+    "copilot",
+    "cline",
+    "cursor",
+    "agent",
+    "codex",
+    "aider",
+    "approve",
+    "revert"
+  ],
+  "categories": [
+    "AI",
+    "SCM Providers",
+    "Other"
+  ],
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "laster",
+          "title": "Laster",
+          "icon": "media/laster.svg"
+        }
+      ]
+    },
+    "views": {
+      "laster": [
+        {
+          "id": "laster.review",
+          "name": "Pending Review"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "laster.review",
+        "contents": "No changes pending review.\n\nCode changes you didn't make yourself (AI agents, scripts, etc.) will show up here."
+      }
+    ],
+    "commands": [
+      {
+        "command": "laster.approveFile",
+        "title": "Approve This File",
+        "category": "Laster",
+        "icon": "$(check)"
+      },
+      {
+        "command": "laster.revertFile",
+        "title": "Revert This File",
+        "category": "Laster",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "laster.openDiff",
+        "title": "Open Diff",
+        "category": "Laster",
+        "icon": "$(diff)"
+      },
+      {
+        "command": "laster.approveAll",
+        "title": "Approve All Files",
+        "category": "Laster",
+        "icon": "$(check-all)"
+      },
+      {
+        "command": "laster.revertAll",
+        "title": "Revert All Files",
+        "category": "Laster",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "laster.toggleHighlights",
+        "title": "Toggle Highlights",
+        "category": "Laster"
+      },
+      {
+        "command": "laster.approveHunk",
+        "title": "Approve This Change",
+        "category": "Laster",
+        "icon": "$(check)"
+      },
+      {
+        "command": "laster.revertHunk",
+        "title": "Revert This Change",
+        "category": "Laster",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "laster.peekHunk",
+        "title": "Peek Previous Code",
+        "category": "Laster"
+      },
+      {
+        "command": "laster.approveHunkAtCursor",
+        "title": "Approve Change at Cursor",
+        "category": "Laster"
+      },
+      {
+        "command": "laster.revertHunkAtCursor",
+        "title": "Revert Change at Cursor",
+        "category": "Laster"
+      },
+      {
+        "command": "laster.nextHunk",
+        "title": "Next Change",
+        "category": "Laster",
+        "icon": "$(arrow-down)"
+      },
+      {
+        "command": "laster.previousHunk",
+        "title": "Previous Change",
+        "category": "Laster",
+        "icon": "$(arrow-up)"
+      },
+      {
+        "command": "laster.approveBatch",
+        "title": "Approve Batch",
+        "category": "Laster",
+        "icon": "$(check)"
+      },
+      {
+        "command": "laster.revertBatch",
+        "title": "Revert Batch",
+        "category": "Laster",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "laster.markAsMine",
+        "title": "Mark as My Edit",
+        "category": "Laster",
+        "icon": "$(person)"
+      },
+      {
+        "command": "laster.pasteAsAi",
+        "title": "Paste as AI Code",
+        "category": "Laster"
+      },
+      {
+        "command": "laster.acceptInlineSuggestion",
+        "title": "Accept Inline Suggestion (tracked)",
+        "category": "Laster"
+      },
+      {
+        "command": "laster.acceptInlineSuggestionNextWord",
+        "title": "Accept Next Word of Inline Suggestion (tracked)",
+        "category": "Laster"
+      },
+      {
+        "command": "laster.paste",
+        "title": "Paste (as my edit)",
+        "category": "Laster"
+      },
+      {
+        "command": "laster.formatDocument",
+        "title": "Format Document (as my edit)",
+        "category": "Laster"
+      },
+      {
+        "command": "laster.formatSelection",
+        "title": "Format Selection (as my edit)",
+        "category": "Laster"
+      },
+      {
+        "command": "laster.organizeImports",
+        "title": "Organize Imports (as my edit)",
+        "category": "Laster"
+      },
+      {
+        "command": "laster.rename",
+        "title": "Rename Symbol (as my edit)",
+        "category": "Laster"
+      },
+      {
+        "command": "laster.quickFix",
+        "title": "Quick Fix (as my edit)",
+        "category": "Laster"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "laster.previousHunk",
+          "when": "view == laster.review && laster.hasPending",
+          "group": "navigation@0"
+        },
+        {
+          "command": "laster.nextHunk",
+          "when": "view == laster.review && laster.hasPending",
+          "group": "navigation@0"
+        },
+        {
+          "command": "laster.approveAll",
+          "when": "view == laster.review",
+          "group": "navigation@1"
+        },
+        {
+          "command": "laster.revertAll",
+          "when": "view == laster.review",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "laster.approveBatch",
+          "when": "view == laster.review && viewItem =~ /^laster\\.batch/",
+          "group": "inline@1"
+        },
+        {
+          "command": "laster.revertBatch",
+          "when": "view == laster.review && viewItem =~ /^laster\\.batch/",
+          "group": "inline@2"
+        },
+        {
+          "command": "laster.markAsMine",
+          "when": "view == laster.review && viewItem == laster.batch.maybeMine",
+          "group": "inline@0"
+        },
+        {
+          "command": "laster.approveFile",
+          "when": "view == laster.review && viewItem =~ /^laster\\.pendingFile/",
+          "group": "inline@1"
+        },
+        {
+          "command": "laster.revertFile",
+          "when": "view == laster.review && viewItem =~ /^laster\\.pendingFile/",
+          "group": "inline@2"
+        },
+        {
+          "command": "laster.openDiff",
+          "when": "view == laster.review && viewItem =~ /^laster\\.pendingFile/",
+          "group": "inline@3"
+        },
+        {
+          "command": "laster.markAsMine",
+          "when": "view == laster.review && viewItem == laster.pendingFile.maybeMine",
+          "group": "inline@0"
+        },
+        {
+          "command": "laster.approveHunk",
+          "when": "view == laster.review && viewItem == laster.hunk",
+          "group": "inline@1"
+        },
+        {
+          "command": "laster.revertHunk",
+          "when": "view == laster.review && viewItem == laster.hunk",
+          "group": "inline@2"
+        }
+      ],
+      "editor/title": [
+        {
+          "submenu": "laster.approveMenu",
+          "when": "laster.activeFilePending",
+          "group": "navigation@1"
+        },
+        {
+          "submenu": "laster.revertMenu",
+          "when": "laster.activeFilePending",
+          "group": "navigation@2"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "laster.approveFile",
+          "when": "laster.activeFilePending"
+        },
+        {
+          "command": "laster.revertFile",
+          "when": "laster.activeFilePending"
+        },
+        {
+          "command": "laster.openDiff",
+          "when": "laster.activeFilePending"
+        },
+        {
+          "command": "laster.approveHunk",
+          "when": "false"
+        },
+        {
+          "command": "laster.revertHunk",
+          "when": "false"
+        },
+        {
+          "command": "laster.peekHunk",
+          "when": "false"
+        },
+        {
+          "command": "laster.approveHunkAtCursor",
+          "when": "laster.activeFilePending"
+        },
+        {
+          "command": "laster.revertHunkAtCursor",
+          "when": "laster.activeFilePending"
+        },
+        {
+          "command": "laster.nextHunk",
+          "when": "laster.hasPending"
+        },
+        {
+          "command": "laster.previousHunk",
+          "when": "laster.hasPending"
+        },
+        {
+          "command": "laster.approveBatch",
+          "when": "false"
+        },
+        {
+          "command": "laster.revertBatch",
+          "when": "false"
+        },
+        {
+          "command": "laster.acceptInlineSuggestion",
+          "when": "false"
+        },
+        {
+          "command": "laster.acceptInlineSuggestionNextWord",
+          "when": "false"
+        },
+        {
+          "command": "laster.paste",
+          "when": "false"
+        },
+        {
+          "command": "laster.formatDocument",
+          "when": "false"
+        },
+        {
+          "command": "laster.formatSelection",
+          "when": "false"
+        },
+        {
+          "command": "laster.organizeImports",
+          "when": "false"
+        },
+        {
+          "command": "laster.rename",
+          "when": "false"
+        },
+        {
+          "command": "laster.quickFix",
+          "when": "false"
+        },
+        {
+          "command": "laster.markAsMine",
+          "when": "laster.activeFilePending"
+        },
+        {
+          "command": "laster.pasteAsAi",
+          "when": "editorTextFocus && !editorReadonly"
+        }
+      ],
+      "laster.approveMenu": [
+        {
+          "command": "laster.approveFile",
+          "group": "1_scope@1"
+        },
+        {
+          "command": "laster.approveAll",
+          "group": "1_scope@2"
+        }
+      ],
+      "laster.revertMenu": [
+        {
+          "command": "laster.revertFile",
+          "group": "1_scope@1"
+        },
+        {
+          "command": "laster.revertAll",
+          "group": "1_scope@2"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "laster.pasteAsAi",
+          "when": "editorTextFocus && !editorReadonly",
+          "group": "9_cutcopypaste@9"
+        }
+      ]
+    },
+    "colors": [
+      {
+        "id": "laster.addedBackground",
+        "description": "Background of lines added or changed by someone other than you.",
+        "defaults": {
+          "dark": "#2ea04333",
+          "light": "#2ea04326",
+          "highContrast": "#2ea04340"
+        }
+      },
+      {
+        "id": "laster.addedWordBackground",
+        "description": "Background of the words that changed inside a changed line.",
+        "defaults": {
+          "dark": "#2ea04366",
+          "light": "#2ea0434d",
+          "highContrast": "#2ea04380"
+        }
+      },
+      {
+        "id": "laster.deletedForeground",
+        "description": "Color of the marker for lines deleted by someone other than you.",
+        "defaults": {
+          "dark": "#f85149",
+          "light": "#cf222e",
+          "highContrast": "#f85149"
+        }
+      },
+      {
+        "id": "laster.fileDecorationForeground",
+        "description": "Color of file and folder names in the explorer and on tabs when they contain changes pending review.",
+        "defaults": {
+          "dark": "#c586c0",
+          "light": "#9b4dca",
+          "highContrast": "#d7a6ff"
+        }
+      }
+    ],
+    "configuration": {
+      "title": "Laster",
+      "properties": {
+        "laster.excludeFolders": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "node_modules",
+            ".git",
+            "dist",
+            "out",
+            "build",
+            ".next",
+            ".nuxt",
+            ".turbo",
+            ".cache",
+            "coverage",
+            ".venv",
+            "venv",
+            "__pycache__",
+            "target",
+            "vendor"
+          ],
+          "description": "Folder names that are not tracked (matched against each path segment)."
+        },
+        "laster.maxFileSizeKB": {
+          "type": "number",
+          "default": 1024,
+          "description": "Files larger than this are not tracked."
+        },
+        "laster.maxSnapshotMB": {
+          "type": "number",
+          "default": 200,
+          "description": "Maximum total size of the initial workspace snapshot."
+        },
+        "laster.trackEditorEdits": {
+          "type": "boolean",
+          "default": true,
+          "description": "Track edits made inside VSCode that are not proven to be yours (in-editor agents such as Cline, Continue, Copilot Edits)."
+        },
+        "laster.trackInlineSuggestions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mark accepted inline suggestions (Copilot, Codeium, ...) as AI code. Laster takes over Tab / Cmd+Right while a suggestion is visible; turn this off if it conflicts with your keybindings."
+        },
+        "laster.wrapUserCommands": {
+          "type": "boolean",
+          "default": true,
+          "description": "Take over the Paste, Format, Organize Imports, Rename and Quick Fix keybindings so their edits count as yours instead of being flagged as AI."
+        },
+        "laster.explorerDecorations": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mark files pending review (\"C\" badge) and every folder above them (\"•\") in the explorer and on editor tabs."
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "laster.nextHunk",
+        "key": "ctrl+alt+]",
+        "when": "laster.hasPending"
+      },
+      {
+        "command": "laster.previousHunk",
+        "key": "ctrl+alt+[",
+        "when": "laster.hasPending"
+      },
+      {
+        "command": "laster.approveHunkAtCursor",
+        "key": "ctrl+alt+enter",
+        "when": "editorTextFocus && laster.activeFilePending"
+      },
+      {
+        "command": "laster.revertHunkAtCursor",
+        "key": "ctrl+alt+backspace",
+        "when": "editorTextFocus && laster.activeFilePending"
+      },
+      {
+        "command": "laster.acceptInlineSuggestion",
+        "key": "tab",
+        "when": "inlineEditIsVisible && tabShouldAcceptInlineEdit && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible && config.laster.trackInlineSuggestions || inlineEditIsVisible && inlineSuggestionVisible && tabShouldAcceptInlineEdit && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible && config.laster.trackInlineSuggestions || inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editor.hasSelection && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible && config.laster.trackInlineSuggestions || inlineEditIsVisible && inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editor.hasSelection && !editorHoverFocused && !editorTabMovesFocus && !suggestWidgetVisible && config.laster.trackInlineSuggestions"
+      },
+      {
+        "command": "laster.acceptInlineSuggestion",
+        "key": "tab",
+        "when": "inInlineEditsPreviewEditor && config.laster.trackInlineSuggestions"
+      },
+      {
+        "command": "laster.acceptInlineSuggestionNextWord",
+        "key": "ctrl+right",
+        "mac": "cmd+right",
+        "when": "cursorBeforeGhostText && inlineSuggestionVisible && !accessibilityModeEnabled && !editorReadonly && config.laster.trackInlineSuggestions"
+      },
+      {
+        "command": "laster.paste",
+        "key": "ctrl+v",
+        "mac": "cmd+v",
+        "when": "editorTextFocus && !editorReadonly && config.laster.wrapUserCommands"
+      },
+      {
+        "command": "laster.formatDocument",
+        "key": "shift+alt+f",
+        "linux": "ctrl+shift+i",
+        "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor && config.laster.wrapUserCommands"
+      },
+      {
+        "command": "laster.formatSelection",
+        "key": "ctrl+k ctrl+f",
+        "mac": "cmd+k cmd+f",
+        "when": "editorHasDocumentSelectionFormattingProvider && editorTextFocus && !editorReadonly && config.laster.wrapUserCommands"
+      },
+      {
+        "command": "laster.organizeImports",
+        "key": "shift+alt+o",
+        "when": "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/ && config.laster.wrapUserCommands"
+      },
+      {
+        "command": "laster.rename",
+        "key": "f2",
+        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly && config.laster.wrapUserCommands"
+      },
+      {
+        "command": "laster.quickFix",
+        "key": "ctrl+.",
+        "mac": "cmd+.",
+        "when": "editorHasCodeActionsProvider && textInputFocus && !editorReadonly && config.laster.wrapUserCommands"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "laster.approveMenu",
+        "label": "Approve",
+        "icon": "$(check)"
+      },
+      {
+        "id": "laster.revertMenu",
+        "label": "Revert",
+        "icon": "$(discard)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run compile && node --test \"out/test/**/*.test.js\"",
+    "test:integration": "npm run compile && node out/integration/runTest.js",
+    "package": "vsce package",
+    "publish:vsce": "vsce publish",
+    "publish:ovsx": "ovsx publish"
+  },
+  "dependencies": {
+    "diff": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/diff": "^5.2.1",
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^3.2.0",
+    "ovsx": "^1.2.0",
+    "typescript": "^5.5.0"
+  }
+}

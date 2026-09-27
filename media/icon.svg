@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <rect width="256" height="256" rx="48" fill="#1e2230"/>
+  <!-- unchanged line -->
+  <rect x="44" y="62" width="112" height="16" rx="8" fill="#8b93a8"/>
+  <!-- added line (green highlight) -->
+  <rect x="32" y="100" width="160" height="40" rx="10" fill="#2ea043" fill-opacity="0.28"/>
+  <rect x="32" y="100" width="8" height="40" rx="3" fill="#2ea043"/>
+  <rect x="56" y="112" width="96" height="16" rx="8" fill="#e6edf3"/>
+  <!-- deleted line (red marker) -->
+  <path d="M34 158 L50 158 L42 170 Z" fill="#f85149"/>
+  <rect x="60" y="156" width="72" height="14" rx="7" fill="#f85149" fill-opacity="0.75"/>
+  <!-- unchanged line -->
+  <rect x="44" y="190" width="92" height="16" rx="8" fill="#8b93a8"/>
+  <!-- review check -->
+  <circle cx="192" cy="178" r="40" fill="#c586c0"/>
+  <path d="M174 178 L188 192 L212 164" fill="none" stroke="#1e2230" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
